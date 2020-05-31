@@ -10,8 +10,9 @@ export const initialState = {
   errorMessage: null,
   loggedIn: false,
   userDetail: {
-    name: '',
-    surname: ''
+    firstName: null,
+    lastName: null,
+    email: null,
   },
 }
 
@@ -27,13 +28,14 @@ const loginReducer = (state = initialState, action) =>
         break
 
       case LOGIN_SUCCESS:
-        draft.userDetail = action.payload
+        console.log('LOGIN_SUCCESS', action.payload);
+        draft.userDetail = {...action.payload}
         draft.loading = false
         draft.loggedIn = true
         break
 
       case LOGIN_ERROR:
-        draft.errorMessage = action.errorMessage;
+        draft.errorMessage = action.payload;
         draft.loading = false;
         break;
     }

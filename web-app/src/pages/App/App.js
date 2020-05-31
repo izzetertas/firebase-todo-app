@@ -1,8 +1,11 @@
-import React from 'react'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { BrowserRouter as Router, Route, Switch, useHistory } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 
 import LoginPage from 'pages/LoginPage'
+import TodosPage from 'pages/TodosPage'
+
 import signup from 'pages/signup'
 import home from 'pages/home'
 import Footer from 'components/Footer'
@@ -10,7 +13,22 @@ import AppWrapper from './AppWrapper'
 
 import GlobalStyle from '../../global-styles'
 
-function App() {
+import { hasUserToken } from 'utils/auth'
+import { loadUserInfo } from 'pages/LoginPage/actions'
+
+const App = () => {
+	const dispatch = useDispatch()
+	const history = useHistory()
+	const { loggedIn } =  useSelector(state => state.user)
+	useEffect(() => {
+		if(!hasUserToken()) {
+			history.push('/login')
+		}
+		if(!loggedIn) {
+			dispatch(loadUserInfo())
+		}
+	}, [])
+
 	return (
 		<AppWrapper>
 			<Helmet
@@ -24,6 +42,7 @@ function App() {
 					<Switch>
 						<Route exact path="/login" component={LoginPage} />
 						<Route exact path="/signup" component={signup} />
+						<Route exact path="/todos" component={TodosPage} />
 						<Route exact path="/" component={home} />
 					</Switch>
 					<Footer />
@@ -33,4 +52,5 @@ function App() {
 		</AppWrapper>
 	)
 }
+
 export default App

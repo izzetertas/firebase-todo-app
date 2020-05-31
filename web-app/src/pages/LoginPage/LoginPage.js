@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import React, {Component, useEffect} from 'react'
 import { Formik } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 
 import Form from 'components/Form'
 import Input from 'components/Input'
@@ -13,18 +14,19 @@ import Title from 'components/Title'
 
 import { loginRequest } from './actions'
 
-import history from 'utils/history'
+// import history from 'utils/history'
 import validateEmailAddress from 'utils/validateEmailAddress'
 
 const LoginPage = () => {
   const dispatch = useDispatch()
-  const userLoggedIn = useSelector(state => state.user.loggedIn)
+  const { loggedIn, loading, errorMessage } = useSelector(state => state.user)
+  const history = useHistory()
 
   useEffect(() => {
-    if(userLoggedIn) {
+    if(loggedIn) {
       history.push('todos')
     }
-  }, [userLoggedIn])
+  }, [loggedIn])
 
   return (
     <div>
@@ -86,7 +88,13 @@ const LoginPage = () => {
                 name="password"
               />
             </Label>
-            <Button type="submit">Sign in</Button>
+            <Text color="red">{errorMessage}</Text>
+            <Button
+              type='submit'
+              disabled={loading}
+            >
+              {(loading &&  !errorMessage) ? 'loading...' : 'Sign in'}
+            </Button>
           </Form>
         )}
       />

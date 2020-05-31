@@ -1,48 +1,64 @@
 import to from 'await-to-js'
-import axios from 'axios'
 
 import { 
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
   LOGIN_ERROR,
+  LOAD_USER_INFO,
+  REDIRECT_TO_LOGIN,
  } from './constants'
 
-import { login, getUserDetails } from 'api'
+import userService from 'services/userService'
+import { getUserToken } from 'utils/auth'
 
 export const loginRequest = (email, password) => async dispatch => {
   dispatch({ type: LOGIN_REQUEST })
 
-  const [err, payload] = await to(login(email, password))
-
+  const [err, payload] = await to(userService.login(email, password))
+  console.log('LOGIN ERROR ', err);
   if(err) {
-    return dispatch(loginError(err))
+    return dispatch({ type: LOGIN_ERROR, err })
   }
 
   const token = `Bearer ${payload.token}`
   localStorage.setItem('AuthToken', token)
-  axios.defaults.headers.common = { Authorization: `${token}` }
 
-  const [errUser, userDetail] = await to(getUserDetails(token))
+  const [errUserMessage, userDetail] = await to(userService.getUserDetails(token))
   
-  if(errUser) {
-    return dispatch(loginError(errUser))
+  if(errUserMessage) {
+    return dispatch({
+      type: LOGIN_ERROR,
+      payload: errUserMessage,
+    })
   }
 
-  dispatch(
-    loginSuccessed({
+  dispatch({
+    type: LOGIN_SUCCESS,
+    payload: {
       firstName: userDetail.firstName,
       lastName: userDetail.lastName,
-      email: userDetail.email
-    })
-  )
+      email: userDetail.email,
+    },
+  })
 }
 
-const loginSuccessed = (payload) =>({
-  type: LOGIN_SUCCESS,
-  payload,
-})
+export const loadUserInfo = () => async dispatch => {
 
-const loginError = (errorMessage) => ({
-  type: LOGIN_ERROR,
-  errorMessage,
-})
+  const token = `Bearer ${getUserToken()}`
+
+  const [errUserMessage, userDetail] = await to(userService.getUserDetails(token))
+  
+  if(errUserMessage) {
+    return dispatch({ type: REDIRECT_TO_LOGIN })
+  }
+
+  dispatch({
+    type: LOAD_USER_INFO,
+    payload: {
+      firstName: userDetail.firstName,
+      lastName: userDetail.lastName,
+      email: userDetail.email,
+      loggedIn: true,
+    },
+  })
+}
