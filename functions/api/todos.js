@@ -1,7 +1,7 @@
 const { db } = require('../utils/admin')
 exports.getAllTodos = (request, response) => {
 	db.collection('todos')
-		.where('username', '==', request.user.username)
+		.where('username', '==', request.user.email)
 		.orderBy('createdAt', 'desc')
 		.get()
 		.then((data) => {
@@ -9,10 +9,10 @@ exports.getAllTodos = (request, response) => {
 			data.forEach((doc) => {
 				todos.push({
 					todoId: doc.id,
-					title: doc.data().title,
+					text: doc.data().text,
 					username: doc.data().username,
-					body: doc.data().body,
 					createdAt: doc.data().createdAt,
+					done: doc.data().done
 				})
 			})
 			return response.json(todos)
@@ -32,7 +32,7 @@ exports.getOneTodo = (request, response) => {
 					error: 'Todo not found',
 				})
 			}
-			if (doc.data().username !== request.user.username) {
+			if (doc.data().username !== request.user.email) {
 				return response.status(403).json({ error: 'UnAuthorized' })
 			}
 			TodoData = doc.data()
@@ -46,19 +46,15 @@ exports.getOneTodo = (request, response) => {
 }
 
 exports.postOneTodo = (request, response) => {
-	if (request.body.body.trim() === '') {
-		return response.status(400).json({ body: 'Must not be empty' })
-	}
-
-	if (request.body.title.trim() === '') {
-		return response.status(400).json({ title: 'Must not be empty' })
+	if (request.body.text.trim() === '') {
+		return response.status(400).json({ text: 'Must not be empty' })
 	}
 
 	const newTodoItem = {
-		title: request.body.title,
-		username: request.user.username,
-		body: request.body.body,
+		text: request.body.text,
+		username: request.user.email,
 		createdAt: new Date().toISOString(),
+		done: request.body.done
 	}
 
 	db.collection('todos')
@@ -84,7 +80,7 @@ exports.deleteTodo = (request, response) => {
 					error: 'Todo not found',
 				})
 			}
-			if (doc.data().username !== request.user.username) {
+			if (doc.data().username !== request.user.email) {
 				return response.status(403).json({ error: 'UnAuthorized' })
 			}
 			return document.delete()
