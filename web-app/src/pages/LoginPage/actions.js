@@ -17,13 +17,16 @@ export const loginRequest = (email, password) => async dispatch => {
   if(err) {
     return dispatch(loginError(err))
   }
+
   const token = `Bearer ${payload.token}`
   localStorage.setItem('AuthToken', token)
   axios.defaults.headers.common = { Authorization: `${token}` }
 
   const [errUser, userDetail] = await to(getUserDetails(token))
   
-  // this.props.history.push('/')
+  if(errUser) {
+    return dispatch(loginError(errUser))
+  }
 
   dispatch(
     loginSuccessed({
