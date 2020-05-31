@@ -8,6 +8,7 @@ import {
 export const initialState = {
   loading: false,
   errorMessage: null,
+  loggedIn: false,
   userDetail: {
     name: '',
     surname: ''
@@ -27,7 +28,8 @@ const loginReducer = (state = initialState, action) =>
 
       case LOGIN_SUCCESS:
         draft.userDetail = action.payload
-        draft.loading = false  
+        draft.loading = false
+        draft.loggedIn = true
         break
 
       case LOGIN_ERROR:
