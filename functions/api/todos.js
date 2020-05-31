@@ -2,7 +2,6 @@ const { db } = require('../utils/admin')
 exports.getAllTodos = (request, response) => {
 	db.collection('todos')
 		.where('username', '==', request.user.email)
-		.orderBy('createdAt', 'desc')
 		.get()
 		.then((data) => {
 			let todos = []
