@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React, {Component} from 'react'
+import React, {Component, useEffect} from 'react'
 import { Formik } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -13,10 +13,19 @@ import Title from 'components/Title'
 
 import { loginRequest } from './actions'
 
+import history from 'utils/history'
+import validateEmailAddress from 'utils/validateEmailAddress'
+
 const LoginPage = () => {
   const dispatch = useDispatch()
-  const user = useSelector(state => state.user)
-  console.log('Logiun page user', user);
+  const userLoggedIn = useSelector(state => state.user.loggedIn)
+
+  useEffect(() => {
+    if(userLoggedIn) {
+      history.push('todos')
+    }
+  }, [userLoggedIn])
+
   return (
     <div>
       <Title>Login Page</Title>
@@ -24,10 +33,9 @@ const LoginPage = () => {
         initialValues={{ email: '', password: '' }}
         validate={values => {
           let errors = {};
-          let regexPattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
           if (!values.email) {
             errors.email = 'Email is required'
-          } else if (!regexPattern.test(values.email)) {
+          } else if (!validateEmailAddress(values.email)) {
             errors.email = 'Invalid email address'
           }
 
