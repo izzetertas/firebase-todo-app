@@ -47,12 +47,18 @@ export const addTodoRequest = (text, done) => async dispatch => {
 }
 
 export const removeTodoRequest = (todoId) => async dispatch => {
-  dispatch({ type: TODO_REMOVE_REQUEST })
+  dispatch({
+    type: TODO_REMOVE_REQUEST,
+    payload: todoId
+  })
 
-  const [err] = await to(todosService.removeTodo(todoId))
+  const [error] = await to(todosService.removeTodo(todoId))
 
-  if(err) {
-    return dispatch({ type: TODO_REMOVE_ERROR, err })
+  if(error) {
+    return dispatch({
+      type: TODO_REMOVE_ERROR,
+      payload: { errorMessage: error, id: todoId }
+    })
   }
 
   dispatch({
@@ -62,7 +68,10 @@ export const removeTodoRequest = (todoId) => async dispatch => {
 }
 
 export const updateTodoRequest = (todoItem) => async dispatch => {
-  dispatch({ type: TODO_UPDATE_REQUEST })
+  dispatch({
+    type: TODO_UPDATE_REQUEST,
+    payload: todoItem.id
+  })
 
   const [err] = await to(todosService.updateTodo(todoItem))
 

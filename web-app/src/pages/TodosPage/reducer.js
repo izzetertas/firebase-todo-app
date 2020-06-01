@@ -26,7 +26,6 @@ export const initialState = {
 /* eslint-disable default-case, no-param-reassign */
 const todosReducer = (state = initialState, action) =>
   produce(state, draft => {
-    // console.log('todosReducer', action)
     switch (action.type) {
       case TODOS_REQUEST:
         draft.itemsLoading = true
@@ -62,6 +61,11 @@ const todosReducer = (state = initialState, action) =>
       case TODO_REMOVE_REQUEST:
         draft.removeTodoInProgress = true
         draft.errorMessage = null
+        draft.items.forEach((item, ind) => {
+          if(item.id === action.payload) {
+            draft.items[ind].inProgress = true
+          }
+        })
         break
 
       case TODO_REMOVE_SUCCESS:
@@ -70,19 +74,29 @@ const todosReducer = (state = initialState, action) =>
         break
 
       case TODO_REMOVE_ERROR:
-        draft.errorMessage = action.errorMessage
+        draft.errorMessage = action.payload.errorMessage
         draft.removeTodoInProgress = false
+        draft.items.forEach((item, ind) => {
+          if(item.id === action.payload) {
+            draft.items[ind].inProgress = false
+          }
+        })
         break
       
       case TODO_UPDATE_REQUEST:
         draft.updateTodoInProgress = true
         draft.errorMessage = null
+        draft.items.forEach((item, ind) => {
+          if(item.id === action.payload) {
+            draft.items[ind].inProgress = true
+          }
+        })
         break
 
       case TODO_UPDATE_SUCCESS:
         draft.items.forEach((item, ind) => {
           if(item.id === action.payload.id) {
-            draft.items[ind] = { ...action.payload }
+            draft.items[ind] = { ...action.payload, inProgress: false }
           }
         })
         draft.updateTodoInProgress = false

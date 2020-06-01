@@ -16,7 +16,10 @@ export const loginRequest = (email, password) => async dispatch => {
   const payload = await userService.login(email, password)
 
   if(payload.errorMessage) {
-    return dispatch({ type: LOGIN_ERROR, payload: payload.errorMessage })
+    return dispatch({
+      type: LOGIN_ERROR,
+      payload: payload.errorMessage
+    })
   }
 
   const token = `Bearer ${payload.token}`
