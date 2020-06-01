@@ -1,6 +1,8 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
 
+import LocaleToggle from 'components/LocaleToggle'
+
 import NavBar from './NavBar'
 import HeaderLink from './HeaderLink'
 import messages from './messages'
@@ -24,6 +26,7 @@ function Header() {
             <FormattedMessage {...messages.logout} />
           </HeaderLink>
         }
+        <LocaleToggle />
       </NavBar>
     </div>
   )

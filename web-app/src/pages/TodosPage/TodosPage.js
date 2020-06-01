@@ -1,16 +1,19 @@
-import styled from 'styled-components'
 import React, { useEffect } from 'react'
+import { FormattedMessage } from 'react-intl'
 
 import { TodoList } from '@izzetertas/lib-todo'
 import Title from 'components/Title'
 
 import { useDispatch, useSelector } from 'react-redux'
+
 import {
   getTodosRequest,
   addTodoRequest,
   removeTodoRequest,
   updateTodoRequest
 } from './actions'
+
+import messages from './messages'
 
 const TodosPage = () => {
   const dispatch = useDispatch()
@@ -37,7 +40,9 @@ const TodosPage = () => {
 
 	return (
 		<div>
-			<Title>{`${firstName} ${lastName} Todos Page`}</Title>
+			<Title>
+        <FormattedMessage {...messages.header} values={{ firstName, lastName }} />
+      </Title>
 			<div>
 				<TodoList
           items={items}

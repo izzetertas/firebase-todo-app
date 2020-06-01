@@ -11,7 +11,7 @@ import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { ConnectedRouter } from 'connected-react-router'
 import history from 'utils/history'
-
+import axios from 'axios'
 
 import App from 'pages/App'
 
@@ -22,6 +22,9 @@ import configureStore from './store/configureStore'
 
 // Import i18n messages
 import { translationMessages } from './i18n'
+
+// todo: get from environment variable
+axios.defaults.baseURL = 'https://us-central1-xyz-todo.cloudfunctions.net/api'
 
 // Create redux store with history
 const initialState = {}

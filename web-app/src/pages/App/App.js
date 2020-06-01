@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { BrowserRouter as Router, Route, Switch, useHistory, Redirect } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch, useHistory } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
 
 import LoginPage from 'pages/LoginPage'
 import TodosPage from 'pages/TodosPage'
 import SignupPage from 'pages/SignupPage'
 
-import Footer from 'components/Footer'
 import Loading from 'components/Loading'
 import Header from 'components/Header'
 
@@ -72,9 +71,7 @@ const App = () => {
 							<Route exact path="/" component={LoginPage} />
 						</Switch>
 						</>
-						
 					}
-					<Footer />
 					<GlobalStyle />
 				</>
 			</Router>

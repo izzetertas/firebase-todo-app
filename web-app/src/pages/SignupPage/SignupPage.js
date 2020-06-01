@@ -1,9 +1,10 @@
-import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 import to from 'await-to-js'
 import { useHistory } from 'react-router-dom'
+
+import { FormattedMessage } from 'react-intl'
 
 import Form from 'components/Form'
 import Input from 'components/Input'
@@ -14,7 +15,8 @@ import Text from 'components/Text'
 import Title from 'components/Title'
 
 import userService from 'services/userService'
-import validateEmailAddress from 'utils/validateEmailAddress'
+
+import messages from './messages'
 
 const SignupPage = () => {
   const [loading, setLoading] = useState(false)
@@ -43,7 +45,7 @@ const SignupPage = () => {
     }),
     onSubmit: async (data, { setErrors }) =>  {
       setLoading(true)
-      const [err, token] = await to(userService.signup(data))
+      const [err] = await to(userService.signup(data))
       setLoading(false)
       if(err) {
         return setErrors(err)
@@ -54,7 +56,9 @@ const SignupPage = () => {
 
   return (
     <div>
-      <Title>Signup Page</Title>
+      <Title>
+        <FormattedMessage {...messages.header} />
+      </Title>
       <Form onSubmit={formik.handleSubmit}>
         <Label>
           Name *
@@ -120,11 +124,15 @@ const SignupPage = () => {
           type='submit'
           disabled={loading}
         >
-          {(loading) ? 'loading...' : 'Sign up'}
+          {(loading)
+            ? <FormattedMessage {...messages.buttonLoading} />
+              : 
+              <FormattedMessage {...messages.buttonText} />
+          }
         </Button>
       </Form>
       <NavLink href='login'>
-        Do you have an account? Sign in
+      <FormattedMessage {...messages.navLink} />
       </NavLink>
     </div>
   )

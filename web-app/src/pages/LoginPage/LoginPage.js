@@ -1,8 +1,11 @@
-import styled from 'styled-components'
 import React, { useEffect } from 'react'
-import { Formik } from 'formik'
+import { useFormik } from 'formik'
+import * as yup from 'yup'
+
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
+
+import { FormattedMessage } from 'react-intl'
 
 import Form from 'components/Form'
 import Input from 'components/Input'
@@ -13,8 +16,7 @@ import Text from 'components/Text'
 import Title from 'components/Title'
 
 import { loginRequest } from './actions'
-
-import validateEmailAddress from 'utils/validateEmailAddress'
+import messages from './messages'
 
 const LoginPage = () => {
   const dispatch = useDispatch()
@@ -27,78 +29,72 @@ const LoginPage = () => {
     }
   }, [loggedIn])
 
+  const formik = useFormik({
+    initialValues: { email: '', password: '' },
+    validationSchema: yup.object({
+      email: yup.string()
+        .email('Invalid email address')
+        .required('Email is required'),
+      password: yup.string()
+        .min(6, 'Password must be 6 characters')
+        .max(6, 'Password must be 6 characters')
+        .required('A password is required'),
+    }),
+    onSubmit: async (data, { setErrors }) =>  {
+      const { email, password } = data
+      dispatch(loginRequest(email, password))
+    },
+  })
+
   return (
     <div>
-      <Title>Login Page</Title>
-      <Formik
-        initialValues={{ email: '', password: '' }}
-        validate={values => {
-          let errors = {};
-          if (!values.email) {
-            errors.email = 'Email is required'
-          } else if (!validateEmailAddress(values.email)) {
-            errors.email = 'Invalid email address'
+      <Title>
+        <FormattedMessage {...messages.header} />
+      </Title>
+      <Form onSubmit={formik.handleSubmit}>
+        <Label>
+          Email *
+          {formik.touched.email && formik.errors.email &&
+            <Text color='red'>{formik.errors.email}</Text>
           }
-
-          if (!values.password) {
-            errors.password = 'A password is required'
-          } else if (values.password.length < 6) {
-            errors.password = 'Password must be 6 characters'
+          <Input
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.email}
+            border={formik.touched.email && formik.errors.email && '1px solid red'}
+            type='text'
+            name='email'
+          />
+        </Label>
+        <Label>
+          Password *
+          {formik.touched.password && formik.errors.password &&
+            <Text color='red'>{formik.errors.password}</Text>
           }
-          return errors;
-        }}
-        onSubmit={({ email, password }) => {
-          dispatch(loginRequest(email, password))
-        }}
-        render={({
-          touched,
-          errors,
-          values,
-          handleChange,
-          handleBlur,
-          handleSubmit,
-        }) => (
-          <Form onSubmit={handleSubmit}>
-            <Label>
-              Email *
-              {touched.email &&
-                errors.email && <Text color="red">{errors.email}</Text>}
-              <Input
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.email}
-                border={touched.email && errors.email && "1px solid red"}
-                type="text"
-                name="email"
-              />
-            </Label>
-            <Label>
-              Password *
-              {touched.password &&
-                errors.password && <Text color="red">{errors.password}</Text>}
-              <Input
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.password}
-                border={
-                  touched.password && errors.password && "1px solid red"
-                }
-                type="password"
-                name="password"
-              />
-            </Label>
-            <Text color="red">{errorMessage}</Text>
-            <Button
-              type='submit'
-              disabled={loading}
-            >
-              {(loading &&  !errorMessage) ? 'loading...' : 'Sign in'}
-            </Button>
-          </Form>
-        )}
-      />
+          <Input
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.password}
+            border={
+              formik.touched.password && formik.errors.password && '1px solid red'
+            }
+            type='password'
+            name='password'
+          />
+        </Label>
+        <Text color='red'>{errorMessage}</Text>
+        <Button
+          type='submit'
+          disabled={loading}
+        >
+          {(loading &&  !errorMessage) ? 
+          <FormattedMessage {...messages.buttonLoading} />
+          : 
+          <FormattedMessage {...messages.buttonText} />}
+        </Button>
+      </Form>
       <NavLink href='signup'>
-        Don't have an account? Sign Up
+        <FormattedMessage {...messages.navLink} />
       </NavLink>
     </div>
   )
