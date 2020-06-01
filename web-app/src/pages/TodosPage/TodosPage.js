@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import React, { useEffect } from 'react'
 
 import { TodoList } from '@izzetertas/lib-todo'
+import Title from 'components/Title'
 
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -12,14 +13,13 @@ import {
 } from './actions'
 
 const TodosPage = () => {
-	const dispatch = useDispatch()
+  const dispatch = useDispatch()
   const { user } = useSelector((state) => state)
-  console.log('user', user);
 	const { firstName, lastName } = useSelector((state) => state.user.userDetail)
 	const { items, itemsLoading, addTodoInProgress } = useSelector((state) => state.todos)
 
 	useEffect(() => {
-		dispatch(getTodosRequest())
+    dispatch(getTodosRequest())
   }, [])
   
   const handleChange = ({ action, id, done, text }) => {
@@ -38,7 +38,7 @@ const TodosPage = () => {
 
 	return (
 		<div>
-			<div>{`${firstName} ${lastName} Todos Page`}</div>
+			<Title>{`${firstName} ${lastName} Todos Page`}</Title>
 			<div>
 				<TodoList
           items={items}
