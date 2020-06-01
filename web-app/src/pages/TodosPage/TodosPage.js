@@ -14,7 +14,6 @@ import {
 
 const TodosPage = () => {
   const dispatch = useDispatch()
-  const { user } = useSelector((state) => state)
 	const { firstName, lastName } = useSelector((state) => state.user.userDetail)
 	const { items, itemsLoading, addTodoInProgress } = useSelector((state) => state.todos)
 

@@ -9,19 +9,18 @@ import {
  } from './constants'
 
 import userService from 'services/userService'
-import { getUserToken } from 'utils/auth'
+import { getUserToken, setUserToken } from 'utils/auth'
 
 export const loginRequest = (email, password) => async dispatch => {
   dispatch({ type: LOGIN_REQUEST })
+  const payload = await userService.login(email, password)
 
-  const [err, payload] = await to(userService.login(email, password))
-  console.log('LOGIN ERROR ', err);
-  if(err) {
-    return dispatch({ type: LOGIN_ERROR, err })
+  if(payload.errorMessage) {
+    return dispatch({ type: LOGIN_ERROR, payload: payload.errorMessage })
   }
 
   const token = `Bearer ${payload.token}`
-  localStorage.setItem('AuthToken', token)
+  setUserToken(token)
 
   const [errUserMessage, userDetail] = await to(userService.getUserDetails(token))
   
@@ -46,18 +45,17 @@ export const loadUserInfo = () => async dispatch => {
 
   const token = `Bearer ${getUserToken()}`
 
-  const [errUserMessage, userDetail] = await to(userService.getUserDetails(token))
-  
-  if(errUserMessage) {
+  const payload = await userService.getUserDetails(token)
+  if(payload.redirectToLogin) {
     return dispatch({ type: REDIRECT_TO_LOGIN })
   }
 
   dispatch({
     type: LOAD_USER_INFO,
     payload: {
-      firstName: userDetail.firstName,
-      lastName: userDetail.lastName,
-      email: userDetail.email,
+      firstName: payload.firstName,
+      lastName: payload.lastName,
+      email: payload.email,
       loggedIn: true,
     },
   })

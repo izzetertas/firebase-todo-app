@@ -5,28 +5,31 @@ import { Helmet } from 'react-helmet'
 
 import LoginPage from 'pages/LoginPage'
 import TodosPage from 'pages/TodosPage'
+import SignupPage from 'pages/SignupPage'
 
-import signup from 'pages/signup'
 import Footer from 'components/Footer'
+import Loading from 'components/Loading'
+import Header from 'components/Header'
 
 import AppWrapper from './AppWrapper'
 
 import GlobalStyle from '../../global-styles'
 
-import { hasUserToken } from 'utils/auth'
+import { hasUserToken, redirectToLoginPage } from 'utils/auth'
 import { loadUserInfo } from 'pages/LoginPage/actions'
-import Loading from 'components/Loading'
 
 const App = () => {
 	const dispatch = useDispatch()
 	const history = useHistory()
 	const isLoginPage = history.location.pathname === '/login'
+	const isSignupPage = history.location.pathname === '/signup'
 	const [loadUserData, setLoadUserData] = useState(!isLoginPage)
 
-	const { loggedIn } =  useSelector(state => state.user)
+	const { loggedIn, redirectToLogin } =  useSelector(state => state.user)
 	
 	useEffect(() => {
-		if(isLoginPage) {
+		if(isLoginPage || isSignupPage) {
+			setLoadUserData(false)
 			return
 		}
 
@@ -35,14 +38,18 @@ const App = () => {
 			return
 		}
 		setLoadUserData(false)
-		history.push('/login')
+		redirectToLoginPage()
 	}, [])
 
 	useEffect(() => {
+		if(redirectToLogin) {
+			setLoadUserData(false)
+			redirectToLoginPage()
+		}
 		if(loggedIn) {
 			setLoadUserData(false)
 		}
-	}, [loggedIn])
+	}, [loggedIn, redirectToLogin])
 
 	return (
 		<AppWrapper>
@@ -54,15 +61,15 @@ const App = () => {
 			</Helmet>
 			<Router>
 				<>
+					<Header />
 					{loadUserData
 					? <Loading />
 					: <>
 						<Switch>
 							<Route exact path="/login" component={LoginPage} />
-							<Route exact path="/signup" component={signup} />
+							<Route exact path="/signup" component={SignupPage} />
 							<Route exact path="/todos" component={TodosPage} />
 							<Route exact path="/" component={LoginPage} />
-							{/* <PrivateRoute authed={loggedIn} path='/todos' component={TodosPage} /> */}
 						</Switch>
 						</>
 						

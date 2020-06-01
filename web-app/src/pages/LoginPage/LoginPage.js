@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React, {Component, useEffect} from 'react'
+import React, { useEffect } from 'react'
 import { Formik } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
@@ -14,7 +14,6 @@ import Title from 'components/Title'
 
 import { loginRequest } from './actions'
 
-// import history from 'utils/history'
 import validateEmailAddress from 'utils/validateEmailAddress'
 
 const LoginPage = () => {

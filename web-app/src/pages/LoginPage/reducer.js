@@ -11,6 +11,7 @@ export const initialState = {
   loading: false,
   errorMessage: null,
   loggedIn: false,
+  redirectToLogin: false,
   userDetail: {
     firstName: null,
     lastName: null,
@@ -21,10 +22,11 @@ export const initialState = {
 /* eslint-disable default-case, no-param-reassign */
 const loginReducer = (state = initialState, action) =>
   produce(state, draft => {
-    console.log('loginReducer', action)
+    // console.log('loginReducer', action)
     switch (action.type) {
       case LOGIN_REQUEST:
         draft.loading = true
+        draft.redirectToLogin = false
         draft.errorMessage = null
         draft.userDetail = { }
         break
@@ -38,6 +40,7 @@ const loginReducer = (state = initialState, action) =>
       case LOGIN_ERROR:
         draft.errorMessage = action.payload;
         draft.loading = false;
+        draft.redirectToLogin = false
         break
 
       case LOAD_USER_INFO:
@@ -48,6 +51,7 @@ const loginReducer = (state = initialState, action) =>
       case REDIRECT_TO_LOGIN:
         draft.loggedIn = false
         draft.userDetail = {}
+        draft.redirectToLogin = true
         break
     }
   })

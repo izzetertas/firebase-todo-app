@@ -27,7 +27,7 @@ exports.loginUser = (request, response) => {
 			console.error(error)
 			return response
 				.status(403)
-				.json({ general: 'wrong credentials, please try again' })
+				.json({ errorMessage: 'Wrong credentials! Please try again.' })
 		})
 }
 
@@ -36,11 +36,8 @@ exports.signUpUser = (request, response) => {
 		firstName: request.body.firstName,
 		lastName: request.body.lastName,
 		email: request.body.email,
-		phoneNumber: request.body.phoneNumber,
-		country: request.body.country,
 		password: request.body.password,
-		confirmPassword: request.body.confirmPassword,
-		username: request.body.username,
+		username: request.body.email,
 	}
 
 	const { valid, errors } = validateSignUpData(newUser)
@@ -54,7 +51,7 @@ exports.signUpUser = (request, response) => {
 			if (doc.exists) {
 				return response
 					.status(400)
-					.json({ username: 'this username is already taken' })
+					.json({ errorMessage: 'this username is already taken' })
 			} else {
 				return firebase
 					.auth()
@@ -70,9 +67,6 @@ exports.signUpUser = (request, response) => {
 			const userCredentials = {
 				firstName: newUser.firstName,
 				lastName: newUser.lastName,
-				username: newUser.username,
-				phoneNumber: newUser.phoneNumber,
-				country: newUser.country,
 				email: newUser.email,
 				createdAt: new Date().toISOString(),
 				userId,
@@ -85,18 +79,18 @@ exports.signUpUser = (request, response) => {
 		.catch((err) => {
 			console.error(err)
 			if (err.code === 'auth/email-already-in-use') {
-				return response.status(400).json({ email: 'Email already in use' })
+				return response.status(400).json({ errorMessage: 'Email already in use' })
 			} else {
 				return response
 					.status(500)
-					.json({ general: 'Something went wrong, please try again' })
+					.json({ errorMessage: 'Something went wrong, please try again' })
 			}
 		})
 }
 
 exports.getUserDetail = (request, response) => {
 	let userData = {}
-	db.doc(`/users/${request.user.username}`)
+	db.doc(`/users/${request.user.email}`)
 		.get()
 		.then((doc) => {
 			if (doc.exists) {
@@ -106,7 +100,7 @@ exports.getUserDetail = (request, response) => {
 		})
 		.catch((error) => {
 			console.error(error)
-			return response.status(500).json({ error: error.code })
+			return response.status(500).json({ errorMessage: error.code })
 		})
 }
 
@@ -120,7 +114,7 @@ exports.updateUserDetails = (request, response) => {
 		.catch((error) => {
 			console.error(error)
 			return response.status(500).json({
-				message: 'Cannot Update the value',
+				errorMessage: 'Cannot update the value',
 			})
 		})
 }

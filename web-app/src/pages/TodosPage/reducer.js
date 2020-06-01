@@ -26,7 +26,7 @@ export const initialState = {
 /* eslint-disable default-case, no-param-reassign */
 const todosReducer = (state = initialState, action) =>
   produce(state, draft => {
-    console.log('todosReducer', action)
+    // console.log('todosReducer', action)
     switch (action.type) {
       case TODOS_REQUEST:
         draft.itemsLoading = true

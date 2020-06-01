@@ -1,40 +1,61 @@
 import axios from 'axios'
-import { getOptions } from 'utils/auth'
+import to from 'await-to-js'
 
-// axios.interceptors.request.use(function (config) {
-//   // Do something before request is sent
-//   return config;
-// }, function (error) {
-//   // Do something with request error
-//   return Promise.reject(error);
-// });
+axios.interceptors.request.use(
+  config => {
+    if(config.url !== '/login') {
+      config.headers['Authorization'] = localStorage.getItem('AuthToken')
+    }
+    return config
+  }, 
+  error => Promise.reject(error.response)
+)
 
 // // Add a response interceptor
-// axios.interceptors.response.use(function (response) {
-//   // Do something with response data
-//   return response;
-// }, function (error) {
-//   // Do something with response error
-//   return Promise.reject(error);
-// });
+axios.interceptors.response.use(
+  response => response,
+  error => {
+    console.log('error', error.response)
+    const path = error.response.config.url
+    if(error && error.response.status === 403 && path !== '/login') {
+      window.location.href = '/login'
+    }
+    return Promise.reject(error.response)
+  }
+)
 
 export const login = async (email, password) => {
-  return axios
-    .post('/login', { email, password })
-    .then(response => {
-      return response.data
-    })
+  const [err, response] =  await to(axios.post('/login', { email, password }))
+  if(err) return {
+    statusCode: err.status,
+    errorMessage: err.data.errorMessage
+  }
+  return {
+    token: response.data.token
+  }
 }
 
 export const getUserDetails = async () => {
-  return axios
-    .get('/user', getOptions())
-    .then(response => {
-      return response.data.userCredentials
-    })
+  const [err, response] = await to(axios.get('/user'))
+
+  if(err && err.status === 403) {
+    return { redirectToLogin: true }
+  }
+  return response.data.userCredentials
 }
+
+export const signup = async (userInfo) => {  
+  const [err, response] = await to(axios.post('/signup', userInfo))
+  console.log('SIGNUP error', err);
+  if(err && err.status === 400) {
+    return { errorMessage: err.data.errorMessage }
+  }
+  return response.data
+}
+
 
 export default {
   login,
+  signup,
   getUserDetails,
 }

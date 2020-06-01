@@ -1,10 +1,8 @@
 import axios from 'axios'
-import { getOptions } from 'utils/auth'
-
 
 export const getTodos = async () => {
   return axios
-    .get('/todos', getOptions() )
+    .get('/todos' )
     .then((response) => {
       if(!response.data) return null
 
@@ -18,7 +16,7 @@ export const getTodos = async () => {
 
 export const addTodo = async (data) => {
   return axios
-    .post('/todo', data, getOptions())
+    .post('/todo', data)
     .then((response) => {
       return response.data
     })
@@ -26,7 +24,7 @@ export const addTodo = async (data) => {
 
 export const updateTodo = async ({id, ...data}) => {
   return axios
-    .put(`/todo/${id}`, data, getOptions())
+    .put(`/todo/${id}`, data)
     .then((response) => {
       return response.data
     })
@@ -34,7 +32,7 @@ export const updateTodo = async ({id, ...data}) => {
 
 export const removeTodo = async (id) => {
   return axios
-    .delete(`/todo/${id}`, getOptions())
+    .delete(`/todo/${id}`)
     .then((response) => {
       return response.data
     })

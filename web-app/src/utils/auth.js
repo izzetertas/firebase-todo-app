@@ -14,8 +14,14 @@ export const getUserToken = () => {
 	return localStorage.getItem('AuthToken')
 }
 
-export const getOptions = () => ({
-	headers: {
-		Authorization: localStorage.getItem('AuthToken')
-	}
-})
+export const setUserToken = (token) => {
+	return localStorage.setItem('AuthToken', token)
+}
+
+export const removeUserToken = () => {
+	return localStorage.removeItem('AuthToken')
+}
+
+export const redirectToLoginPage = () => {
+	window.location.href = '/login'
+}
