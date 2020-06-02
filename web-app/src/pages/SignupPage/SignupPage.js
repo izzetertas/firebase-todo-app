@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
-import to from 'await-to-js'
+
 import { useHistory } from 'react-router-dom'
 
 import { FormattedMessage } from 'react-intl'
@@ -45,14 +45,17 @@ const SignupPage = () => {
     }),
     onSubmit: async (data, { setErrors }) =>  {
       setLoading(true)
-      const [err] = await to(userService.signup(data))
+      const { errorMessage } = await userService.signup(data)
+
       setLoading(false)
-      if(err) {
-        return setErrors(err)
+      if(errorMessage) {
+        return setErrors(errorMessage)
       }
       history.push('/login')
     },
   })
+
+  console.log('Formik', formik);
 
   return (
     <div>
@@ -119,7 +122,9 @@ const SignupPage = () => {
             name="password"
           />
         </Label>
-        {/* <Text color="red">{errorMessage}</Text> */}
+          {typeof formik.errors === 'string' &&
+            <Text color="red">{formik.errors}</Text>
+          }
         <Button
           type='submit'
           disabled={loading}
