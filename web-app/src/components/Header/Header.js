@@ -13,7 +13,8 @@ import NavBarRight from './NavBarRight'
 import NavUserInfo from './NavUserInfo'
 
 function Header() {
-  const  { loggedIn, userDetail } =  useSelector(state => state.user)
+  const  { loggedIn, userDetail = {} } =  useSelector(state => state.user)
+  const { firstName = '', lastName = ''} = userDetail
 
   const handleLogoutClick = () => {
     removeUserToken()
@@ -23,10 +24,8 @@ function Header() {
   return (
     <div>
       <NavBar>
-        {userDetail &&
-        <NavUserInfo>
-            {`${userDetail.firstName} ${userDetail.lastName}`}  
-        </NavUserInfo>}
+        {firstName &&
+        <NavUserInfo>{`${firstName} ${lastName}`}</NavUserInfo>}
         <NavBarRight>
           <LocaleToggle />
           {loggedIn &&
