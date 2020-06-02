@@ -12,7 +12,7 @@ import Header from 'components/Header'
 
 import AppWrapper from './AppWrapper'
 
-import GlobalStyle from '../../global-styles'
+import GlobalStyle from 'global-styles'
 
 import { hasUserToken, redirectToLoginPage } from 'utils/auth'
 import { loadUserInfo } from 'pages/LoginPage/actions'
@@ -53,10 +53,10 @@ const App = () => {
 	return (
 		<AppWrapper>
 			<Helmet
-				titleTemplate="%s - Todo List App"
-				defaultTitle="React Todo List app"
+				titleTemplate='%s - Todo List App'
+				defaultTitle='React Todo List app'
 			>
-				<meta name="description" content="A React Todo List application" />
+				<meta name='description' content='A React Todo List application' />
 			</Helmet>
 			<Router>
 				<>
@@ -65,10 +65,10 @@ const App = () => {
 					? <Loading />
 					: <>
 						<Switch>
-							<Route exact path="/login" component={LoginPage} />
-							<Route exact path="/signup" component={SignupPage} />
-							<Route exact path="/todos" component={TodosPage} />
-							<Route exact path="/" component={LoginPage} />
+							<Route exact path='/login' component={LoginPage} />
+							<Route exact path='/signup' component={SignupPage} />
+							<Route exact path='/todos' component={TodosPage} />
+							<Route exact path='/' component={LoginPage} />
 						</Switch>
 						</>
 					}

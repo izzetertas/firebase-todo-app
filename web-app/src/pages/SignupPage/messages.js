@@ -1,8 +1,3 @@
-/*
- * Footer Messages
- *
- * This contains all the text for the Footer component.
- */
 import { defineMessages } from 'react-intl'
 
 export const scope = 'todoApp.pages.SignupPage'
@@ -12,13 +7,21 @@ export default defineMessages({
     id: `${scope}.header`,
     defaultMessage: 'Join us',
   },
+  email: {
+    id: `${scope}.email`,
+    defaultMessage: 'Email *',
+  },
+  password: {
+    id: `${scope}.password`,
+    defaultMessage: 'Password *',
+  },
   firstName: {
     id: `${scope}.firstName`,
-    defaultMessage: 'Name',
+    defaultMessage: 'Name *',
   },
   lastName: {
     id: `${scope}.lastName`,
-    defaultMessage: 'Last name',
+    defaultMessage: 'Last name *',
   },
   buttonText: {
     id: `${scope}.button.text`,
@@ -32,5 +35,4 @@ export default defineMessages({
     id: `${scope}.navLink`,
     defaultMessage: `Do you have an account? Sign in`,
   }
-  
 })

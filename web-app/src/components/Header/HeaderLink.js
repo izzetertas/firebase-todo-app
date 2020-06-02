@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import { Link } from 'react-router-dom'
+import styled from 'styled-components'
 
 export default styled(Link)`
   display: inline-flex;
@@ -17,5 +17,4 @@ export default styled(Link)`
   font-size: 16px;
   border: 1px solid white;
   color: white;
-
-`;
+`

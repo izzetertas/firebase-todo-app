@@ -2,12 +2,14 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import Toggle from 'components/Toggle'
+
 import Wrapper from './Wrapper'
 import messages from './messages'
-import { appLocales } from '../../i18n'
-import { changeLocale } from 'components/LanguageProvider/actions'
+import { appLocales } from 'i18n'
 
+import { changeLocale } from 'components/LanguageProvider/actions'
 import { setUserLanguage }  from 'utils/languageHelper'
+
 const LocaleToggle = () => {
   const dispatch = useDispatch()
   const locale = useSelector(state => state.language.locale)

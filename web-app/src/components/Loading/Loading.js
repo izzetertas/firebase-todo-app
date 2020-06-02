@@ -1,15 +1,15 @@
 import React from 'react'
 import styled from 'styled-components'
-import PulseLoader from 'react-spinners/PulseLoader'
+import HashLoader from 'react-spinners/HashLoader'
 
 const LoadingDiv = styled.div`
   display: flex;
   justify-content: center;
-  margin: 96px;
+  margin: 120px;
 `
 const Loading = () => (
   <LoadingDiv>
-    <PulseLoader size={60} color={'#36D7B7'} loading />
+    <HashLoader size={80} color={'#5993f1'} loading />
   </LoadingDiv>
 )
 

@@ -53,7 +53,7 @@ const LoginPage = () => {
       </Title>
       <Form onSubmit={formik.handleSubmit}>
         <Label>
-          Email *
+          <FormattedMessage {...messages.email} />
           {formik.touched.email && formik.errors.email &&
             <Text color='red'>{formik.errors.email}</Text>
           }
@@ -67,7 +67,7 @@ const LoginPage = () => {
           />
         </Label>
         <Label>
-          Password *
+          <FormattedMessage {...messages.password} />
           {formik.touched.password && formik.errors.password &&
             <Text color='red'>{formik.errors.password}</Text>
           }

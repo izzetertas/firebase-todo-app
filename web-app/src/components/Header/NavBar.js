@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
 export default styled.div`
   display: flex;
@@ -8,4 +8,4 @@ export default styled.div`
   margin: 0 auto;
   padding: 0;
   background-color: #5994f0;
-`;
+`

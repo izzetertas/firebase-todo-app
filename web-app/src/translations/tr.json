@@ -14,6 +14,16 @@
   "todoApp.components.LocaleToggle.en": "English",
   "todoApp.components.LocaleToggle.tr": "Turkce",
 
+  "todoApp.components.Header.logout" : "Cikis",
+
+  "todoApp.pages.SignupPage.firstName": "Ad",
+  "todoApp.pages.SignupPage.lastName": "Soyad",
+  "todoApp.pages.SignupPage.email": "Email Adres",
+  "todoApp.pages.SignupPage.password": "Sifre",
+
+  "todoApp.pages.LoginPage.email": "Email Adres",
+  "todoApp.pages.LoginPage.password": "Sifre",
+
   "todoList.entryForm.addButton": "Ekle",
   "todoList.entryForm.inputPlaceholder": "Yapmak istediginiz seyi buraya girin",
   "todoList.header": "Todo Listem"

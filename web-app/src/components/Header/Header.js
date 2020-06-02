@@ -1,5 +1,6 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
+import { useSelector } from 'react-redux'
 
 import LocaleToggle from 'components/LocaleToggle'
 
@@ -8,7 +9,6 @@ import HeaderLink from './HeaderLink'
 import messages from './messages'
 
 import { removeUserToken, redirectToLoginPage } from 'utils/auth'
-import { useSelector } from 'react-redux'
 
 function Header() {
   const  { loggedIn } =  useSelector(state => state.user)

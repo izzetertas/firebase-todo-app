@@ -11,7 +11,6 @@ axios.interceptors.request.use(
   error => Promise.reject(error.response)
 )
 
-// // Add a response interceptor
 axios.interceptors.response.use(
   response => response,
   error => {
@@ -26,6 +25,7 @@ axios.interceptors.response.use(
 
 export const login = async (email, password) => {
   const [err, response] =  await to(axios.post('/login', { email, password }))
+
   if(err) return {
     statusCode: err.status,
     errorMessage: err.data.errorMessage
@@ -46,7 +46,7 @@ export const getUserDetails = async () => {
 
 export const signup = async (userInfo) => {  
   const [err, response] = await to(axios.post('/signup', userInfo))
-  console.log('SIGNUP error', err);
+
   if(err && err.status === 400) {
     return { errorMessage: err.data.errorMessage }
   }

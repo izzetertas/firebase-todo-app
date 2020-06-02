@@ -61,7 +61,7 @@ const SignupPage = () => {
       </Title>
       <Form onSubmit={formik.handleSubmit}>
         <Label>
-          Name *
+        <FormattedMessage {...messages.firstName} />
           {formik.touched.firstName && formik.errors.firstName &&
             <Text color="red">{formik.errors.firstName}</Text>
           }
@@ -76,7 +76,7 @@ const SignupPage = () => {
           />
         </Label>
         <Label>
-          Last name *
+        <FormattedMessage {...messages.lastName} />
           {formik.touched.lastName && formik.errors.lastName &&
             <Text color="red">{formik.errors.lastName}</Text>
           }
@@ -91,7 +91,7 @@ const SignupPage = () => {
           />
         </Label>
         <Label>
-          Email *
+          <FormattedMessage {...messages.email} />
           {formik.touched.email && formik.errors.email &&
             <Text color="red">{formik.errors.email}</Text>
           }
@@ -105,7 +105,7 @@ const SignupPage = () => {
           />
         </Label>
         <Label>
-          Password *
+        <FormattedMessage {...messages.password} />
           {formik.touched.password &&
             formik.errors.password && <Text color="red">{formik.errors.password}</Text>}
           <Input

@@ -1278,7 +1278,7 @@
 
 "@izzetertas/lib-todo@https://github.com/izzetertas/lib-todo.git":
   version "1.0.0"
-  resolved "https://github.com/izzetertas/lib-todo.git#73d613ead755295b5e4f1cafbdb8eb7a98e01fe1"
+  resolved "https://github.com/izzetertas/lib-todo.git#b03faee02400a7b9445456ba5dd741b577ecdbfe"
   dependencies:
     classnames "^2.2.6"
     react-icons "^3.10.0"
