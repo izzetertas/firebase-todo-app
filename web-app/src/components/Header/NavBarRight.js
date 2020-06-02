@@ -9,5 +9,4 @@ export default styled.div`
   padding: 0;
   background-color: #5994f0;
   height: 60px;
-  color: white;
 `
