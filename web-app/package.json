@@ -34,7 +34,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "e2etest": "npx codeceptjs run",
+    "e2etest:verbose": "npx codeceptjs run --verbose"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -52,6 +54,12 @@
     ]
   },
   "devDependencies": {
-    "babel-plugin-styled-components": "^1.10.7"
+    "@codeceptjs/mock-request": "^0.3.0",
+    "@codeceptjs/ui": "^0.3.8",
+    "babel-plugin-styled-components": "^1.10.7",
+    "codeceptjs": "^2.6.5",
+    "parse-function": "^5.6.10",
+    "puppeteer": "^3.3.0",
+    "shortid": "^2.2.15"
   }
 }
