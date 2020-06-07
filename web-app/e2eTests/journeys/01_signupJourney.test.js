@@ -1,7 +1,5 @@
 Feature('Journey:signup @signup')
 
-const constants = require('../constants')
-
 Scenario('fill the signup form and submit', async (I, MockServer) => {
 
   MockServer.signup()
