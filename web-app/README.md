@@ -21,8 +21,7 @@ Launches the test runner in the interactive watch mode.<br />
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
 ### `yarn e2etest`
-
-Launches the test runner in the interactive watch mode.<br />
+Launches end to end tests via CodeceptJs.
 
 
 ### `yarn build`
