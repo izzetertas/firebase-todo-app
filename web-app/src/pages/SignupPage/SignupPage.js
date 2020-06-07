@@ -55,8 +55,6 @@ const SignupPage = () => {
     },
   })
 
-  console.log('Formik', formik);
-
   return (
     <div>
       <Title>
