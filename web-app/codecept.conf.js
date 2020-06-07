@@ -1,49 +1,47 @@
-const { setHeadlessWhen } = require('@codeceptjs/configure');
-
-// turn on headless mode when running with HEADLESS=true environment variable
-// HEADLESS=true npx codecept run
-setHeadlessWhen(process.env.HEADLESS);
-
 exports.config = {
-  tests: 'e2eTests/*_test.js',
   output: 'e2eTests/',
   helpers: {
     Puppeteer: {
+      // see more config options:
+      // https://github.com/codecept-js/CodeceptJS/blob/master/docs/helpers/Puppeteer.md
       url: 'http://localhost:3000',
-      show: false,
+      // url: 'https://xyz-todo.web.app', for test on real site...
+      show: true,
       windowSize: '1200x900',
       chrome: {
-        args: [
-          '--disable-web-security',
-        ],
-      },
+        args: ['--disable-web-security']
+      }
     },
-    // MockRequestHelper: {
-    //   require: '@codeceptjs/mock-request',
-    //   mode: 'record',
-    //   recordIfMissing: true,
-    //   recordFailedRequests: false,
-    //   expiresIn: null,
-    //   // persisterOptions: {
-    //   //   keepUnusedRequests: false,
-    //   //   fs: {
-    //   //     recordingsDir: './data/requests',
-    //   //   },
-    //   // },
-    // }
+    MockRequestHelper: {
+      require: '@codeceptjs/mock-request',
+      mode: 'record',
+      recordIfMissing: true,
+      recordFailedRequests: false,
+      expiresIn: null,
+      persisterOptions: {
+        keepUnusedRequests: false,
+        fs: {
+          recordingsDir: './data/requests'
+        }
+      }
+    }
   },
   include: {
-    I: './steps_file.js'
+    I: './e2eTests/pages/steps_file.js',
+    SignupPage: './e2eTests/pages/SignupPage.js'
   },
-  bootstrap: null,
   mocha: {},
-  name: 'web-app',
+  bootstrap: null,
+  teardown: null,
+  hooks: [],
   plugins: {
-    retryFailedStep: {
-      enabled: true
-    },
     screenshotOnFail: {
       enabled: true
+    },
+    retryFailedStep: {
+      enabled: true
     }
-  }
+  },
+  tests: 'e2eTests/*_test.js',
+  name: 'web-app'
 }
