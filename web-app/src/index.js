@@ -22,7 +22,9 @@ import configureStore from './store/configureStore'
 
 import { translationMessages } from './i18n'
 
-axios.defaults.baseURL = 'https://us-central1-xyz-todo.cloudfunctions.net/api'
+import { apiBaseUrl } from './constants'
+
+axios.defaults.baseURL = apiBaseUrl
 
 // Create redux store with history
 const initialState = {}

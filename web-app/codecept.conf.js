@@ -14,7 +14,7 @@ exports.config = {
     },
     MockRequestHelper: {
       require: '@codeceptjs/mock-request',
-      mode: 'record',
+      mode: 'replay',
       recordIfMissing: true,
       recordFailedRequests: false,
       expiresIn: null,
@@ -28,7 +28,8 @@ exports.config = {
   },
   include: {
     I: './e2eTests/pages/steps_file.js',
-    SignupPage: './e2eTests/pages/SignupPage.js'
+    LoginPage: './e2eTests/pages/LoginPage.js',
+    MockServer: './e2eTests/pages/MockServer.js'
   },
   mocha: {},
   bootstrap: null,
@@ -42,6 +43,6 @@ exports.config = {
       enabled: true
     }
   },
-  tests: 'e2eTests/*_test.js',
+  tests: 'e2eTests/journeys/*.test.js',
   name: 'web-app'
 }

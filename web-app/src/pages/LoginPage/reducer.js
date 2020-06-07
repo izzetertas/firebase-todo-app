@@ -23,7 +23,6 @@ export const initialState = {
 /* eslint-disable default-case, no-param-reassign */
 const loginReducer = (state = initialState, action) =>
   produce(state, draft => {
-    // console.log('loginReducer', action)
     switch (action.type) {
       case LOGIN_REQUEST:
         draft.loading = true

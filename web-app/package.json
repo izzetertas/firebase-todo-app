@@ -36,7 +36,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "e2etest": "npx codeceptjs run",
-    "e2etest:verbose": "npx codeceptjs run --verbose"
+    "e2etest:verbose": "npx codeceptjs run --verbose",
+    "e2etest:record": "MOCK_MODE=record npx codeceptjs run --debug",
+    "ui": "npx codecept-ui"
   },
   "eslintConfig": {
     "extends": "react-app"
