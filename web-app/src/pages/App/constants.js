@@ -1,0 +1,1 @@
+export const STOP_GLOBAL_LOADING = 'todoApp/AppPage/STOP_GLOBAL_LOADING'

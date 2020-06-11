@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { BrowserRouter as Router, Route, Switch, useHistory } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
@@ -9,46 +9,24 @@ import SignupPage from 'pages/SignupPage'
 
 import Loading from 'components/Loading'
 import Header from 'components/Header'
+import PrivateRoute from 'components/PrivateRoute'
 
 import AppWrapper from './AppWrapper'
 
 import GlobalStyle from 'global-styles'
 
-import { hasUserToken, redirectToLoginPage } from 'utils/auth'
 import { loadUserInfo } from 'pages/LoginPage/actions'
 
 const App = () => {
 	const dispatch = useDispatch()
 	const history = useHistory()
-	const isLoginPage = history.location.pathname === '/login'
-	const isSignupPage = history.location.pathname === '/signup'
-	const [loadUserData, setLoadUserData] = useState(!isLoginPage)
-
-	const { loggedIn, redirectToLogin } =  useSelector(state => state.user)
+	
+	const { loading } =  useSelector(state => state.global)
+	const { loggedIn } =  useSelector(state => state.user)
 	
 	useEffect(() => {
-		if(isLoginPage || isSignupPage) {
-			setLoadUserData(false)
-			return
-		}
-
-		if(hasUserToken()) {
-			dispatch(loadUserInfo())
-			return
-		}
-		setLoadUserData(false)
-		redirectToLoginPage()
+		dispatch(loadUserInfo(history))
 	}, [])
-
-	useEffect(() => {
-		if(redirectToLogin) {
-			setLoadUserData(false)
-			redirectToLoginPage()
-		}
-		if(loggedIn) {
-			setLoadUserData(false)
-		}
-	}, [loggedIn, redirectToLogin])
 
 	return (
 		<AppWrapper>
@@ -61,13 +39,18 @@ const App = () => {
 			<Router>
 				<>
 					<Header />
-					{loadUserData
+					{loading
 					? <Loading />
 					: <>
 						<Switch>
 							<Route exact path='/login' component={LoginPage} />
 							<Route exact path='/signup' component={SignupPage} />
-							<Route exact path='/todos' component={TodosPage} />
+							<PrivateRoute
+								isAuthenticated={loggedIn}
+								exact
+								path='/todos'
+								component={TodosPage}
+							/>
 							<Route exact path='/' component={LoginPage} />
 						</Switch>
 						</>

@@ -5,14 +5,12 @@ import {
   LOGIN_SUCCESS,
   LOGIN_ERROR,
   LOAD_USER_INFO,
-  REDIRECT_TO_LOGIN
  } from './constants'
-
+ 
 export const initialState = {
   loading: false,
   errorMessage: null,
   loggedIn: false,
-  redirectToLogin: false,
   userDetail: {
     firstName: null,
     lastName: null,
@@ -26,7 +24,6 @@ const loginReducer = (state = initialState, action) =>
     switch (action.type) {
       case LOGIN_REQUEST:
         draft.loading = true
-        draft.redirectToLogin = false
         draft.errorMessage = null
         draft.userDetail = { }
         break
@@ -40,18 +37,11 @@ const loginReducer = (state = initialState, action) =>
       case LOGIN_ERROR:
         draft.errorMessage = action.payload;
         draft.loading = false;
-        draft.redirectToLogin = false
         break
 
       case LOAD_USER_INFO:
         draft.userDetail = {...action.payload}
         draft.loggedIn = true
-        break
-      
-      case REDIRECT_TO_LOGIN:
-        draft.loggedIn = false
-        draft.userDetail = {}
-        draft.redirectToLogin = true
         break
     }
   })

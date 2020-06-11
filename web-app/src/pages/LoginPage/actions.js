@@ -4,12 +4,13 @@ import {
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
   LOGIN_ERROR,
-  LOAD_USER_INFO,
-  REDIRECT_TO_LOGIN,
+  LOAD_USER_INFO
  } from './constants'
 
 import userService from 'services/userService'
-import { getUserToken, setUserToken } from 'utils/auth'
+import { getUserToken, setUserToken, removeUserToken } from 'utils/auth'
+
+import { STOP_GLOBAL_LOADING } from 'pages/App/constants'
 
 export const loginRequest = (email, password) => async dispatch => {
   dispatch({ type: LOGIN_REQUEST })
@@ -44,22 +45,44 @@ export const loginRequest = (email, password) => async dispatch => {
   })
 }
 
-export const loadUserInfo = () => async dispatch => {
+const stopGlobalLoading = () => async dispatch => {
+  dispatch({ type: STOP_GLOBAL_LOADING })
+}
 
-  const token = `Bearer ${getUserToken()}`
+export const loadUserInfo = (history) => async dispatch => {
+  const token = getUserToken()
+  if(!token) {
+    removeUserToken()
+    const publicRoutes = ['/login', '/signup', '/']
+		const isPublicRoute = publicRoutes.includes(history.location.pathname)
+    
+    if(isPublicRoute) {
+			return dispatch(stopGlobalLoading())
+    }
 
-  const payload = await userService.getUserDetails(token)
-  if(payload.redirectToLogin) {
-    return dispatch({ type: REDIRECT_TO_LOGIN })
+    if(history.location.pathname !== '/login') {
+       dispatch(stopGlobalLoading())
+      history.push('/login')
+    }
+
+    return
   }
 
-  dispatch({
+  const payload = await userService.getUserDetails(`Bearer ${token}`)
+  if(payload.redirectToLogin) {
+    removeUserToken()
+    history.push('/login')
+    return
+  }
+
+  await dispatch({
     type: LOAD_USER_INFO,
     payload: {
       firstName: payload.firstName,
       lastName: payload.lastName,
       email: payload.email,
-      loggedIn: true,
     },
   })
+
+   dispatch(stopGlobalLoading())
 }
