@@ -36,8 +36,8 @@ const LoginPage = () => {
         .email('Invalid email address')
         .required('Email is required'),
       password: yup.string()
-        .min(6, 'Password must be 6 characters')
-        .max(6, 'Password must be 6 characters')
+        .min(6, 'Password must be min 6 characters')
+        .max(16, 'Password must be max 16 characters')
         .required('A password is required'),
     }),
     onSubmit: async (data, { setErrors }) =>  {
